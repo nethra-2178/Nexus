@@ -1,4 +1,7 @@
-NEXUS
+This is a simple prototype created as part of my learning journey.
+Feedback, ideas, and insights are always welcome.
+
+**NEXUS**
 
 The word **NEXUS** means a connection or a link.
 
