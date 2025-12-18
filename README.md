@@ -14,4 +14,4 @@ Built With
 * SQLite
 
 Note
-This project is a **basic prototype for learning and demonstration purposes**.
+This project is a very basic prototype.
