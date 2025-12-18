@@ -1,8 +1,12 @@
 NEXUS
 
 The word **NEXUS** means a connection or a link.
+
 That is exactly what this project aims to do — create a seamless ecosystem that connects doctors and patients.
-There’s a small (and slightly funny) story behind the name. While watching the Marvel series Loki, I came across an episode titled “The Nexus Event.” The word intrigued me, so I looked up its meaning, and it stayed at the back of my mind.
+
+There’s a small (and slightly funny) story behind the name. While watching the Marvel series Loki, I came across an episode titled “The Nexus Event.” The word intrigued me, so I looked 
+up its meaning, and it stayed at the back of my mind.
+
 Later, when I started building this project, that word came right to the front and took center stage… and voilà — NEXUS was born.
 
 **NEXUS** is a menu-driven Python application that stores and manages basic healthcare records for doctors and patients. This is just a prototype.
