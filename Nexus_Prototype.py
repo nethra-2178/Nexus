@@ -122,7 +122,7 @@ def doc_patient():
     conn = sqlite3.connect("Nexus_data.db")
     cursor = conn.cursor()
 
-    print("Welcome to NEXUS🤍\n")
+    print("Welcome to NEXUS\n")
 
     # Ask user type
     user_type = input("Are you a Doctor or a User? (Doctor/User): ").strip().lower()
@@ -147,7 +147,7 @@ def doc_patient():
 
         if exist == "no":
             # Get Doctor Info
-            print("Enter Doctor Details🩺\n")
+            print("Enter Doctor Details\n")
             doc_name = input("Doctor Name: ")
             doc_email = input("Doctor Email: ")
             doc_contact = input("Doctor Contact: ")
@@ -330,7 +330,7 @@ def update_prescription():
     data = cursor.fetchone()
 
     if not data:
-        print("❌ No prescription found with that ID.\n")
+        print("No prescription found with that ID.\n")
         conn.close()
         return
 
@@ -353,7 +353,7 @@ def update_prescription():
 
     conn.commit()
     conn.close()
-    print("\n✅ Prescription updated successfully!\n")
+    print("\nPrescription updated successfully!\n")
 
 def update_appointment():
     conn = sqlite3.connect("Nexus_data.db")
@@ -368,7 +368,7 @@ def update_appointment():
     data = cursor.fetchone()
 
     if not data:
-        print("❌ No appointment found with that ID.\n")
+        print("No appointment found with that ID.\n")
         conn.close()
         return
 
@@ -388,7 +388,7 @@ def update_appointment():
 
     conn.commit()
     conn.close()
-    print("\n✅ Appointment updated successfully!\n")
+    print("\nAppointment updated successfully!\n")
 
 def view_docboard(doctor_id):
     conn = sqlite3.connect("Nexus_data.db")
@@ -548,4 +548,5 @@ if __name__ == "__main__":
         start_nexus()
         main_menu()
     except KeyboardInterrupt:
+
         print("\nExiting NEXUS… Goodbye!")
