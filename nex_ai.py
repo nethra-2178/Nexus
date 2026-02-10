@@ -31,14 +31,14 @@ def init_db():
     conn.close()
 
 BP_RANGES = [
-    {"sys": (0, 50), "dia": (0, 33), "label": "Dangerously Low", "color": "♥️", "advice": "Seek medical attention immediately"},
-    {"sys": (51, 59), "dia": (34, 39), "label": "Too Low", "color": "❤️", "advice": "Consult doctor"},
-    {"sys": (60, 89), "dia": (40, 59), "label": "Low", "color": "🧡", "advice": "Monitor and rest"},
-    {"sys": (90, 119), "dia": (60, 79), "label": "Normal", "color": "💚", "advice": "Keep up the good habits"},
-    {"sys": (120, 129), "dia": (0, 79), "label": "Elevated", "color": "💛", "advice": "Monitor lifestyle"},
-    {"sys": (130, 139), "dia": (80, 89), "label": "Hypertension Stage 1", "color": "🧡", "advice": "Consult doctor"},
-    {"sys": (140, 179), "dia": (90, 119), "label": "Hypertension Stage 2", "color": "❤️", "advice": "Medical attention needed"},
-    {"sys": (180, 300), "dia": (120, 300), "label": "Hypertensive Crisis", "color": "♥️", "advice": "Seek emergency medical care"},
+    {"sys": (0, 50), "dia": (0, 33), "label": "Dangerously Low", "color": "Dark Red", "advice": "Seek medical attention immediately"},
+    {"sys": (51, 59), "dia": (34, 39), "label": "Too Low", "color": "Red", "advice": "Consult doctor"},
+    {"sys": (60, 89), "dia": (40, 59), "label": "Low", "color": "Orange", "advice": "Monitor and rest"},
+    {"sys": (90, 119), "dia": (60, 79), "label": "Normal", "color": "Green", "advice": "Keep up the good habits"},
+    {"sys": (120, 129), "dia": (0, 79), "label": "Elevated", "color": "Yellow", "advice": "Monitor lifestyle"},
+    {"sys": (130, 139), "dia": (80, 89), "label": "Hypertension Stage 1", "color": "Orange", "advice": "Consult doctor"},
+    {"sys": (140, 179), "dia": (90, 119), "label": "Hypertension Stage 2", "color": "Red", "advice": "Medical attention needed"},
+    {"sys": (180, 300), "dia": (120, 300), "label": "Hypertensive Crisis", "color": "Dark Red", "advice": "Seek emergency medical care"},
 ]
 
 GLUCOSE_RANGES = [
@@ -118,9 +118,9 @@ def predict_health_risks(age, gender, bp_sys, bp_dia, sugar, cholesterol, hr):
                 bp_label = r["label"]
                 break
         if bp_label in ["Hypertension Stage 1", "Hypertension Stage 2", "Elevated", "Hypertensive Crisis"]:
-            risks.append(f"⚠️ Your blood pressure is **{bp_sys}/{bp_dia} mmHg ({bp_label})** — {r['advice']}")
+            risks.append(f"Your blood pressure is **{bp_sys}/{bp_dia} mmHg ({bp_label})** — {r['advice']}")
         elif bp_label in ["Low", "Too Low", "Dangerously Low"]:
-            risks.append(f"⚠️ Your blood pressure is **{bp_sys}/{bp_dia} mmHg ({bp_label})** — {r['advice']}")
+            risks.append(f"Your blood pressure is **{bp_sys}/{bp_dia} mmHg ({bp_label})** — {r['advice']}")
 
         # Glucose
         glucose_label = None
@@ -131,7 +131,7 @@ def predict_health_risks(age, gender, bp_sys, bp_dia, sugar, cholesterol, hr):
                 glucose_advice = r["advice"]
                 break
         if glucose_label in ["High", "Danger-High", "Low"]:
-            risks.append(f"⚠️ Blood sugar **{sugar} mg/dL ({glucose_label})** — {glucose_advice}")
+            risks.append(f"Blood sugar **{sugar} mg/dL ({glucose_label})** — {glucose_advice}")
 
         # Cholesterol
         chol_label = None
@@ -142,7 +142,7 @@ def predict_health_risks(age, gender, bp_sys, bp_dia, sugar, cholesterol, hr):
                 chol_advice = r["advice"]
                 break
         if chol_label in ["At-risk", "Dangerous"]:
-            risks.append(f"⚠️ Cholesterol level **{cholesterol} mg/dL ({chol_label})** — {chol_advice}")
+            risks.append(f"Cholesterol level **{cholesterol} mg/dL ({chol_label})** — {chol_advice}")
 
         # Heart Rate
         resting_low = resting_high = None
@@ -155,12 +155,12 @@ def predict_health_risks(age, gender, bp_sys, bp_dia, sugar, cholesterol, hr):
                 break
         if resting_low is not None:
             if hr < resting_low:
-                risks.append(f"⚠️ Resting heart rate **{hr} bpm** is lower than typical ({resting_low}-{resting_high} bpm)")
+                risks.append(f"Resting heart rate **{hr} bpm** is lower than typical ({resting_low}-{resting_high} bpm)")
             elif hr > resting_high:
-                risks.append(f"⚠️ Resting heart rate **{hr} bpm** is higher than typical ({resting_low}-{resting_high} bpm)")
+                risks.append(f"Resting heart rate **{hr} bpm** is higher than typical ({resting_low}-{resting_high} bpm)")
 
         if not risks:
-            return "✅ Based on your data, there are no major risks detected right now. Keep up the healthy habits 💚"
+            return "Based on your data, there are no major risks detected right now. Keep up the healthy habits 💚"
         else:
             return "Here are some health risks I noticed:\n" + "\n".join(risks)
 
@@ -203,7 +203,7 @@ class NexBot(ctk.CTk):
         frame = ctk.CTkFrame(self)
         frame.pack(expand=True, fill="both")
 
-        ctk.CTkLabel(frame, text="User Registration😊",
+        ctk.CTkLabel(frame, text="User Registration",
                      font=("Times New Roman", 30, "bold")).pack(pady=30)
 
         name = ctk.CTkEntry(frame, placeholder_text="Name")
@@ -244,14 +244,14 @@ class NexBot(ctk.CTk):
         # Welcome message at top
         ctk.CTkLabel(
             frame,
-            text=f"Hi {name} I'm Nexus🤍.\nAsk me anything about your health data.",
+            text=f"Hi {name} I'm Nexus.\nAsk me anything about your health data.",
             font=("Times New Roman", 28, "bold"),
             justify="center"
         ).pack(pady=20)
 
         self.chat_box = ctk.CTkTextbox(frame, width=900, height=500)
         self.chat_box.pack(pady=10)
-        self.chat_box.insert("end", "Nexus 🤍 : Hi.....I'm Nexus. And I'm here to help you so that you could understand your health better.\n\n")
+        self.chat_box.insert("end", "Nexus : Hi.....I'm Nexus. And I'm here to help you so that you could understand your health better.\n\n")
         self.chat_box.configure(state="disabled")  # Make it read-only
 
         self.user_input = ctk.CTkEntry(frame, placeholder_text="Ask anything")
@@ -293,7 +293,7 @@ class NexBot(ctk.CTk):
         # Generate bot response
         response = self.respond(user_id, msg)
         # Show BOT message
-        self.chat_box.insert("end", f"Nexus 🤍 : {response}\n\n")
+        self.chat_box.insert("end", f"Nexus : {response}\n\n")
 
         # Disable chat box again
         self.chat_box.configure(state="disabled")
@@ -310,7 +310,7 @@ class NexBot(ctk.CTk):
         conn.close()
 
         if not data:
-            return "I couldn't find your health data 🤍"
+            return "I couldn't find your health data"
 
         # Get user data
         age = int(data[2])
@@ -366,18 +366,18 @@ class NexBot(ctk.CTk):
             responses.append(
                 f"Your heart rate is **{hr} bpm**.\n"
                 f"For your age and gender, that’s **{status}**.\n"
-                f"If this was measured at rest and you feel fine, there’s usually no immediate concern 🤍"
+                f"If this was measured at rest and you feel fine, there’s usually no immediate concern"
             )
 
             if effort_info:
                 responses.append(
                     f"Your heart rate is **{hr} bpm**.\n"
                     f"This falls into the **{effort_info['zone']}** ({effort_info['percent']}).\n"
-                    f"Effort level: **{effort_info['effort']}** — {effort_info['effect']} 💓"
+                    f"Effort level: **{effort_info['effort']}** — {effort_info['effect']} "
                 )
 
             responses.append(
-                f"Quick pulse check 💓\n"
+                f"Quick pulse check\n"
                 f"• Current rate: **{hr} bpm**\n"
                 f"• Expected resting range: **{resting_low}–{resting_high} bpm**\n"
                 f"• Interpretation: {status.capitalize()}"
@@ -398,12 +398,12 @@ class NexBot(ctk.CTk):
                     break
 
             if glucose_label is None:
-                return f"Your blood sugar is **{sugar} mg/dL**, but I’m unable to clearly classify it right now 🤍"
+                return f"Your blood sugar is **{sugar} mg/dL**, but I’m unable to clearly classify it right now"
 
             sugar_responses = [
-                f"Your blood sugar level is **{sugar} mg/dL**.\nThat falls under **{glucose_label}**.\n{glucose_advice} 🤍",
+                f"Your blood sugar level is **{sugar} mg/dL**.\nThat falls under **{glucose_label}**.\n{glucose_advice} ",
                 f"I checked your glucose reading — **{sugar} mg/dL**.\nThis is considered **{glucose_label}**.\n{glucose_advice}.",
-                f"Here’s a quick blood sugar update 🌿\n• Reading: **{sugar} mg/dL**\n• Status: **{glucose_label}**\n• Advice: {glucose_advice}",
+                f"Here’s a quick blood sugar update\n• Reading: **{sugar} mg/dL**\n• Status: **{glucose_label}**\n• Advice: {glucose_advice}",
                 f"Your glucose came in at **{sugar} mg/dL**.\nThis is classified as **{glucose_label}**.\nPlease keep this in mind: {glucose_advice} 🤍"
             ]
 
@@ -424,18 +424,18 @@ class NexBot(ctk.CTk):
             if chol_label is None:
                 return (
                     f"Your cholesterol is **{cholesterol} mg/dL**, "
-                    f"but I’m unable to clearly categorize it right now 🤍"
+                    f"but I’m unable to clearly categorize it right now"
                 )
 
             cholesterol_responses = [
                 f"Your total cholesterol is **{cholesterol} mg/dL**.\n"
                 f"This falls under **{chol_label}**.\n"
                 f"{chol_advice} 🤍",
-                f"I checked your cholesterol levels 🫀\n"
+                f"I checked your cholesterol levels\n"
                 f"• Total: **{cholesterol} mg/dL**\n"
                 f"• Status: **{chol_label}**\n"
                 f"• Advice: {chol_advice}",
-                f"Here’s a quick cholesterol update 🌿\n"
+                f"Here’s a quick cholesterol update\n"
                 f"Your reading of **{cholesterol} mg/dL** is considered **{chol_label}**.\n"
                 f"{chol_advice}.",
                 f"Your cholesterol came in at **{cholesterol} mg/dL**.\n"
@@ -450,7 +450,7 @@ class NexBot(ctk.CTk):
             points = []
             improvements = []
 
-            summary = "Here’s your health summary 🤍\n\n"
+            summary = "Here’s your health summary: \n\n"
 
             #blood pressure
             bp_label = None
@@ -523,18 +523,18 @@ class NexBot(ctk.CTk):
 
             #Summary
             if points:
-                summary += "✅ What’s looking good:\n"
+                summary += "What’s looking good:\n"
                 for p in points:
                     summary += f"• {p}\n"
 
             if improvements:
-                summary += "\n⚠️ What could improve:\n"
+                summary += "\nWhat could improve:\n"
                 for i in improvements:
                     summary += f"• {i}\n"
 
             summary += (
                 "\nNothing here looks alarming right now.\n"
-                "Small, consistent habits can make a big difference over time 💙"
+                "Small, consistent habits can make a big difference over time "
             )
 
             return summary
@@ -547,9 +547,9 @@ class NexBot(ctk.CTk):
                     found_terms.append(f"**{term.capitalize()}**: {MEDICAL_DICTIONARY[term]}")
 
             if found_terms:
-                return "Here’s what the word means 🤍\n\n" + "\n\n".join(found_terms)
+                return "Here’s what the word means\n\n" + "\n\n".join(found_terms)
             else:
-                return "I couldn't find a definition for that term 🤍"
+                return "I couldn't find a definition for that term "
             
         #Health risk predictor
         if any(word in msg for word in ["predict", "prediction", "risk", "estimate", "forecast"]):
@@ -557,10 +557,11 @@ class NexBot(ctk.CTk):
 
         return (
             "I can help with your medical data\n"
-            "Just ask me 🤍"
+            "Just ask me"
         )
               
 if __name__ == "__main__":
     init_db()
     app = NexBot()
     app.mainloop()
+
