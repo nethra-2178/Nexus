@@ -1,11 +1,13 @@
 # NEXUS
 
 **NEXUS** is a learning-focused healthcare prototype built in Python. It explores how software can act as a *connection point* between doctors and patients by managing basic medical records and offering simple, explainable health insights.
+
 => NEXUS is **not** a medical diagnosis tool. It is an educational prototype created for learning and experimentation only.
 
 ## Why the name “NEXUS”?
 The word **nexus** means *a connection or a link* — which is exactly what this project aims to represent: a seamless ecosystem connecting doctors and patients.
 There’s also a small (and slightly funny) backstory
+
 While watching the Marvel series **Loki**, I came across an episode titled **“The Nexus Event.”** The word intrigued me, so I looked up its meaning. Later, when I started building this project, that word came straight back to mind — and that’s how **NEXUS** was born.
 
 ## Project Structure
