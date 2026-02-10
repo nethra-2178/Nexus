@@ -1,11 +1,5 @@
-from operator import index
 import customtkinter as ctk
-import tkinter as tk
-from tkinter import ttk, messagebox
 import sqlite3
-from datetime import datetime
-import time
-import re
 import random
 import os
 
@@ -117,7 +111,7 @@ def predict_health_risks(age, gender, bp_sys, bp_dia, sugar, cholesterol, hr):
         """
         risks = []
 
-        # Blood Pressure Risk
+        # Blood Pressure
         bp_label = None
         for r in BP_RANGES:
             if r["sys"][0] <= bp_sys <= r["sys"][1] and r["dia"][0] <= bp_dia <= r["dia"][1]:
@@ -128,7 +122,7 @@ def predict_health_risks(age, gender, bp_sys, bp_dia, sugar, cholesterol, hr):
         elif bp_label in ["Low", "Too Low", "Dangerously Low"]:
             risks.append(f"⚠️ Your blood pressure is **{bp_sys}/{bp_dia} mmHg ({bp_label})** — {r['advice']}")
 
-        # Glucose Risk
+        # Glucose
         glucose_label = None
         for r in GLUCOSE_RANGES:
             low, high = r["mgdl"]
@@ -139,7 +133,7 @@ def predict_health_risks(age, gender, bp_sys, bp_dia, sugar, cholesterol, hr):
         if glucose_label in ["High", "Danger-High", "Low"]:
             risks.append(f"⚠️ Blood sugar **{sugar} mg/dL ({glucose_label})** — {glucose_advice}")
 
-        # Cholesterol Risk
+        # Cholesterol
         chol_label = None
         for r in CHOLESTEROL_RANGES:
             t_low, t_high = r["total"]
@@ -150,7 +144,7 @@ def predict_health_risks(age, gender, bp_sys, bp_dia, sugar, cholesterol, hr):
         if chol_label in ["At-risk", "Dangerous"]:
             risks.append(f"⚠️ Cholesterol level **{cholesterol} mg/dL ({chol_label})** — {chol_advice}")
 
-        # Heart Rate Risk (Resting)
+        # Heart Rate
         resting_low = resting_high = None
         for r in HEART_RATE_RESTING:
             if r["age"][0] <= age <= r["age"][1]:
@@ -165,7 +159,6 @@ def predict_health_risks(age, gender, bp_sys, bp_dia, sugar, cholesterol, hr):
             elif hr > resting_high:
                 risks.append(f"⚠️ Resting heart rate **{hr} bpm** is higher than typical ({resting_low}-{resting_high} bpm)")
 
-        # Combine results
         if not risks:
             return "✅ Based on your data, there are no major risks detected right now. Keep up the healthy habits 💚"
         else:
@@ -173,7 +166,6 @@ def predict_health_risks(age, gender, bp_sys, bp_dia, sugar, cholesterol, hr):
 
 
 # Main App Class
-
 class NexBot(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -206,7 +198,6 @@ class NexBot(ctk.CTk):
             self.welcome_label.configure(text=text[:index])
             self.after(30, self.type_text_animation, text, index + 1)
 
-    #User Registration
     def user_registration(self):
         self.clear()
         frame = ctk.CTkFrame(self)
@@ -258,13 +249,11 @@ class NexBot(ctk.CTk):
             justify="center"
         ).pack(pady=20)
 
-        # Chat box (read-only)
         self.chat_box = ctk.CTkTextbox(frame, width=900, height=500)
         self.chat_box.pack(pady=10)
         self.chat_box.insert("end", "Nexus 🤍 : Hi.....I'm Nexus. And I'm here to help you so that you could understand your health better.\n\n")
         self.chat_box.configure(state="disabled")  # Make it read-only
 
-        # User input field
         self.user_input = ctk.CTkEntry(frame, placeholder_text="Ask anything")
         self.user_input.pack(fill="x", padx=40, pady=10)
 
@@ -273,8 +262,6 @@ class NexBot(ctk.CTk):
             lambda event: self.handle_message(did)
         )
 
-
-        # Send button
         send_btn = ctk.CTkButton(
             frame,
             text="Send",
@@ -325,7 +312,7 @@ class NexBot(ctk.CTk):
         if not data:
             return "I couldn't find your health data 🤍"
 
-        # Extract user data
+        # Get user data
         age = int(data[2])
         gender = (data[5] or "").lower()
         bp_sys = int(data[6])
@@ -336,7 +323,7 @@ class NexBot(ctk.CTk):
 
         msg = msg.lower()
 
-        # ---------- BLOOD PRESSURE ----------
+        #Blood pressure
         if any(word in msg for word in ["blood pressure", "bp", "systole", "diastole", "hypertension", "hypotension"]):
             for r in BP_RANGES:
                 if r["sys"][0] <= bp_sys <= r["sys"][1] and r["dia"][0] <= bp_dia <= r["dia"][1]:
@@ -345,10 +332,8 @@ class NexBot(ctk.CTk):
                         f"That falls under **{r['label']}** {r['color']}.\n"
                         f"{r['advice']} 🤍"
         )
-
-
         
-        # ---------- HEART RATE ----------
+        #Heart rate
         if any(word in msg for word in ["heart rate", "heartrate", "pulse", "cardiac", "bpm", "rbpm"]):
             resting_low = resting_high = None
 
@@ -361,7 +346,6 @@ class NexBot(ctk.CTk):
                         resting_low, resting_high = r["male"]
                     break
 
-            # Determine resting status
             if resting_low is None:
                 status = "hard to interpret"
             elif hr < resting_low:
@@ -371,7 +355,6 @@ class NexBot(ctk.CTk):
             else:
                 status = "within a healthy resting range"
 
-            # Check effort zone if HR is high
             effort_info = None
             for e in HEART_RATE_EFFORT:
                 if e["range"][0] <= hr <= e["range"][1]:
@@ -402,8 +385,7 @@ class NexBot(ctk.CTk):
 
             return random.choice(responses)
 
-
-        # ---------- BLOOD SUGAR ----------
+        #Blood sugar
         if any(word in msg for word in ["sugar", "glucose", "diabetes"]):
             glucose_label = None
             glucose_advice = None
@@ -427,8 +409,7 @@ class NexBot(ctk.CTk):
 
             return random.choice(sugar_responses)
 
-
-        # ---------- CHOLESTEROL ----------
+        #Cholesterol
         if "cholesterol" in msg:
             chol_label = None
             chol_advice = None
@@ -464,16 +445,14 @@ class NexBot(ctk.CTk):
 
             return random.choice(cholesterol_responses)
 
-    
-
-        # ---------- SUMMARY ----------
+        #Summarize
         if "summary" in msg or "overview" in msg:
             points = []
             improvements = []
 
             summary = "Here’s your health summary 🤍\n\n"
 
-            # BP
+            #blood pressure
             bp_label = None
             for r in BP_RANGES:
                 if r["sys"][0] <= bp_sys <= r["sys"][1] and r["dia"][0] <= bp_dia <= r["dia"][1]:
@@ -490,7 +469,7 @@ class NexBot(ctk.CTk):
             else:
                 improvements.append("Your blood pressure is elevated")
 
-            # Heart Rate
+            #heart
             resting_low = resting_high = None
             for r in HEART_RATE_RESTING:
                 if r["age"][0] <= age <= r["age"][1]:
@@ -508,7 +487,7 @@ class NexBot(ctk.CTk):
                 else:
                     improvements.append("Your heart rate is higher than expected at rest")
 
-            # Blood Sugar
+            #glucose
             glucose_label = None
             for r in GLUCOSE_RANGES:
                 low, high = r["mgdl"]
@@ -527,7 +506,7 @@ class NexBot(ctk.CTk):
             elif glucose_label in ["Danger-High"]:
                 improvements.append("Your blood sugar is dangerously high and requires immediate medical attention")
 
-            # Cholesterol
+            #cholesterol
             chol_label = None
             for r in CHOLESTEROL_RANGES:
                 t_low, t_high = r["total"]
@@ -542,7 +521,7 @@ class NexBot(ctk.CTk):
             elif chol_label == "Dangerous":
                 improvements.append("Your cholesterol levels are dangerously high and need medical attention")
 
-            # --- ADD POINTS & IMPROVEMENTS TO SUMMARY ---
+            #Summary
             if points:
                 summary += "✅ What’s looking good:\n"
                 for p in points:
@@ -560,7 +539,7 @@ class NexBot(ctk.CTk):
 
             return summary
             
-        # ---------- MEDICAL DICTIONARY ----------
+        #Medical dictionary
         if any(keyword in msg for keyword in ["meaning", "mean", "definition", "explain", "what is", "define"]):
             found_terms = []
             for term in MEDICAL_DICTIONARY:
@@ -572,11 +551,10 @@ class NexBot(ctk.CTk):
             else:
                 return "I couldn't find a definition for that term 🤍"
             
-        # ---------- PREDICTION ----------
+        #Health risk predictor
         if any(word in msg for word in ["predict", "prediction", "risk", "estimate", "forecast"]):
             return predict_health_risks(age, gender, bp_sys, bp_dia, sugar, cholesterol, hr)
 
-        # ---------- FALLBACK ----------
         return (
             "I can help with your medical data\n"
             "Just ask me 🤍"
