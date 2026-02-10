@@ -40,7 +40,9 @@ CustomTkinter (for GUI components in Nexus.AI)
 ## Thank you
 This project was created as part of my learning journey to 
 => understand how healthcare data can be structured 
+
 => explore rule-based systems that mimic early AI decision-making
+
 => practice Python, databases, and application design
 
 This is a **basic prototype** and a work in progress.
