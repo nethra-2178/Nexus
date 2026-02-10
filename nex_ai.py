@@ -160,7 +160,7 @@ def predict_health_risks(age, gender, bp_sys, bp_dia, sugar, cholesterol, hr):
                 risks.append(f"Resting heart rate **{hr} bpm** is higher than typical ({resting_low}-{resting_high} bpm)")
 
         if not risks:
-            return "Based on your data, there are no major risks detected right now. Keep up the healthy habits 💚"
+            return "Based on your data, there are no major risks detected right now. Keep up the healthy habits "
         else:
             return "Here are some health risks I noticed:\n" + "\n".join(risks)
 
@@ -187,7 +187,7 @@ class NexBot(ctk.CTk):
         self.welcome_label = ctk.CTkLabel(frame, text="Welcome to Nexus", font=("Times New Roman", 30, "bold", "italic"))
         self.welcome_label.pack(pady=40)
 
-        self.type_text_animation("Hi, I'm Nexus.\nYour personal Healthcare Companion🤍")
+        self.type_text_animation("Hi, I'm Nexus.\nYour personal Healthcare Companion")
 
 
         continue_btn = ctk.CTkButton(frame, text="Continue →", width=200, command=self.user_registration)
@@ -564,4 +564,5 @@ if __name__ == "__main__":
     init_db()
     app = NexBot()
     app.mainloop()
+
 
